@@ -7,11 +7,27 @@ import {
 } from "@mui/material";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineLock } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const submit = (e) => {
     e.preventDefault();
   };
+
+  async function logined() {
+    const data = { email, password };
+    const response = await axios.post(
+      `http://localhost:5000/api/auth/create-password`,
+      { data }
+    );
+    return response.data;
+  }
+  useEffect(() => {
+    logined();
+  }, []);
 
   return (
     <Grid sx={{ display: "flex", alignItems: "center", height: "100vh" }}>
@@ -32,6 +48,8 @@ const Login = () => {
         </Typography>
         <TextField
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           fullWidth
           sx={{ mt: "20px" }}
           InputProps={{
@@ -44,6 +62,8 @@ const Login = () => {
         />
         <TextField
           type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           fullWidth
           sx={{ mt: "20px" }}
           InputProps={{

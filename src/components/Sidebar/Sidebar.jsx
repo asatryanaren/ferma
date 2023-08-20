@@ -7,7 +7,6 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -15,9 +14,16 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
 import { BiUser } from "react-icons/bi";
-import { AiOutlineMenuFold, AiOutlineDollar } from "react-icons/ai";
+import {
+  AiOutlineMenuFold,
+  AiOutlineMenuUnfold,
+  AiOutlineDollar,
+  AiOutlineLeft,
+  AiOutlineRight,
+} from "react-icons/ai";
 import { GiLabradorHead } from "react-icons/gi";
 import { TfiMenuAlt, TfiDashboard } from "react-icons/tfi";
+import { Button } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -47,7 +53,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -90,13 +95,7 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const handleDrawerToggle = () => setOpen(!open);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -104,52 +103,43 @@ export default function MiniDrawer() {
       <AppBar
         position="fixed"
         open={open}
-        sx={!open && { left: "64px" }}
+        sx={!open && { width: `calc(100% - ${64}px)` }}
         style={{ backgroundColor: "white", color: "#808FA5" }}
-        // style={open && { marginRight: "64" }}
-        // { backgroundColor: "white", color: "#808FA5" },
       >
-        <Toolbar>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <Typography variant="h6" noWrap component="div">
-            {/* Mini variant drawer */}
-            {/* <AiOutlineMenuFold /> */}
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={handleDrawerOpen}
+              onClick={handleDrawerToggle}
               edge="start"
-              sx={{
-                // marginRight: 5,
-                ...(open && { display: "none" }),
-              }}
             >
-              {/* <MenuIcon /> */}
-              <AiOutlineMenuFold />
+              {open ? <AiOutlineMenuFold /> : <AiOutlineMenuUnfold />}
             </IconButton>
             Dashboard
           </Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography sx={{ color: "#009D75" }}>English</Typography>
+            <Button variant="outlined" sx={{ ml: "10px", color: "inherit" }}>
+              Logout
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader sx={{ background: "#00112B" }}>
-          <IconButton
-            onClick={handleDrawerClose}
-            sx={{ m: "0 auto", backgroundColor: "#00112B" }}
-          >
-            {/* {theme.direction === "rtl" ? (
-              // <ChevronRightIcon />
-              <AiOutlineMenuFold />
-            ) : (
-              // <ChevronLeftIcon />
-              // <AiOutlineMenuFold /> */}
-            <GiLabradorHead
-              style={{
-                color: "white",
-                fontSize: "25px",
-              }}
-            />
-            {/* )} */}
-          </IconButton>
+          <GiLabradorHead
+            style={{
+              color: "white",
+              fontSize: "25px",
+              margin: "0 auto",
+            }}
+          />
         </DrawerHeader>
         <List sx={{ background: "#00112B", height: "100vh", color: "white" }}>
           {["Dashboard", "Animals", "Select Fields", "Spendings", "Users"].map(
@@ -183,12 +173,22 @@ export default function MiniDrawer() {
             )
           )}
         </List>
+        <ListItemButton
+          onClick={handleDrawerToggle}
+          sx={{
+            background: "#051A43",
+            color: "white",
+            display: "flex",
+            justifyContent: "center",
+            minHeight: "50px",
+            "&:hover": {
+              background: "#00112B",
+            },
+          }}
+        >
+          {open ? <AiOutlineLeft /> : <AiOutlineRight />}
+        </ListItemButton>
       </Drawer>
-      {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Typography paragraph></Typography>
-        <Typography paragraph></Typography>
-      </Box> */}
     </Box>
   );
 }
