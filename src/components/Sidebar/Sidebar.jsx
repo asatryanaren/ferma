@@ -24,6 +24,9 @@ import {
 import { GiLabradorHead } from "react-icons/gi";
 import { TfiMenuAlt, TfiDashboard } from "react-icons/tfi";
 import { Button } from "@mui/material";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../features/loginSlice";
 
 const drawerWidth = 240;
 
@@ -91,104 +94,134 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer() {
+export default function SideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerToggle = () => setOpen(!open);
+  const disptach = useDispatch();
+  const navigate = useNavigate();
+  const logout = () => {
+    disptach(logOut());
+    navigate("/");
+  };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        open={open}
-        sx={!open && { width: `calc(100% - ${64}px)` }}
-        style={{ backgroundColor: "white", color: "#808FA5" }}
-      >
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
+    <>
+      <Box sx={{ display: "flex", mb: "80px" }}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          open={open}
+          sx={!open && { width: `calc(100% - ${64}px)` }}
+          style={{ backgroundColor: "white", color: "#808FA5" }}
         >
-          <Typography variant="h6" noWrap component="div">
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerToggle}
-              edge="start"
-            >
-              {open ? <AiOutlineMenuFold /> : <AiOutlineMenuUnfold />}
-            </IconButton>
-            Dashboard
-          </Typography>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography sx={{ color: "#009D75" }}>English</Typography>
-            <Button variant="outlined" sx={{ ml: "10px", color: "inherit" }}>
-              Logout
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader sx={{ background: "#00112B" }}>
-          <GiLabradorHead
-            style={{
-              color: "white",
-              fontSize: "25px",
-              margin: "0 auto",
+          <Toolbar
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
             }}
-          />
-        </DrawerHeader>
-        <List sx={{ background: "#00112B", height: "100vh", color: "white" }}>
-          {["Dashboard", "Animals", "Select Fields", "Spendings", "Users"].map(
-            (text) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+          >
+            <Typography variant="h6" noWrap component="div">
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerToggle}
+                edge="start"
+              >
+                {open ? <AiOutlineMenuFold /> : <AiOutlineMenuUnfold />}
+              </IconButton>
+              Dashboard
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography sx={{ color: "#009D75" }}>English</Typography>
+              <Button
+                variant="outlined"
+                sx={{ ml: "10px", color: "inherit" }}
+                onClick={logout}
+              >
+                Logout
+              </Button>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader sx={{ background: "#00112B" }}>
+            <GiLabradorHead
+              style={{
+                color: "white",
+                fontSize: "25px",
+                margin: "0 auto",
+              }}
+            />
+          </DrawerHeader>
+
+          <List sx={{ background: "#00112B", height: "100vh", color: "white" }}>
+            {[
+              "Dashboard",
+              "Animals",
+              "Select Fields",
+              "Spendings",
+              "Users",
+            ].map((text) => (
+              <NavLink
+                to={`/${text.toLowerCase()}`}
+                key={text}
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <ListItem disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "white",
-                      fontSize: "20px",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    {text === "Dashboard" && <TfiDashboard />}
-                    {text === "Animals" && <GiLabradorHead />}
-                    {text === "Select Fields" && <TfiMenuAlt />}
-                    {text === "Spendings" && <AiOutlineDollar />}
-                    {text === "Users" && <BiUser />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            )
-          )}
-        </List>
-        <ListItemButton
-          onClick={handleDrawerToggle}
-          sx={{
-            background: "#051A43",
-            color: "white",
-            display: "flex",
-            justifyContent: "center",
-            minHeight: "50px",
-            "&:hover": {
-              background: "#00112B",
-            },
-          }}
-        >
-          {open ? <AiOutlineLeft /> : <AiOutlineRight />}
-        </ListItemButton>
-      </Drawer>
-    </Box>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "white",
+                        fontSize: "20px",
+                      }}
+                    >
+                      {text === "Dashboard" && <TfiDashboard />}
+                      {text === "Animals" && <GiLabradorHead />}
+                      {text === "Select Fields" && <TfiMenuAlt />}
+                      {text === "Spendings" && <AiOutlineDollar />}
+                      {text === "Users" && <BiUser />}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </NavLink>
+            ))}
+          </List>
+          <ListItemButton
+            onClick={handleDrawerToggle}
+            sx={{
+              background: "#051A43",
+              color: "white",
+              display: "flex",
+              justifyContent: "center",
+              minHeight: "50px",
+              "&:hover": {
+                background: "#00112B",
+              },
+            }}
+          >
+            {open ? <AiOutlineLeft /> : <AiOutlineRight />}
+          </ListItemButton>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+          <Outlet />
+        </Box>
+      </Box>
+    </>
   );
 }

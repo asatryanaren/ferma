@@ -7,32 +7,40 @@ import {
 } from "@mui/material";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineLock } from "react-icons/ai";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginedUser } from "../../services/login.service";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const submit = (e) => {
-    e.preventDefault();
-  };
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("davit.davtyan.dev@gmail.com");
+  const [password, setPassword] = useState("qwerty123");
+  const [emailDirty, setEmailDirty] = useState(false);
+  const [passwordDirty, setPasswordDirty] = useState(false);
 
-  async function logined() {
-    const data = { email, password };
-    const response = await axios.post(
-      `http://localhost:5000/api/auth/create-password`,
-      { data }
-    );
-    return response.data;
-  }
-  useEffect(() => {
-    logined();
-  }, []);
+  const onsubmit = async (e) => {
+    e.preventDefault();
+    dispatch(loginedUser({ email, password }));
+  };
+  const blur = (e) => {
+    if (e.target.name === "email" && e.target.value.length === 0)
+      setEmailDirty(true);
+    if (e.target.name === "password" && e.target.value.length === 0)
+      setPasswordDirty(true);
+  };
+  const changeEmail = (e) => {
+    setEmail(e.target.value);
+    setEmailDirty(false);
+  };
+  const changePassword = (e) => {
+    setPassword(e.target.value);
+    setPasswordDirty(false);
+  };
 
   return (
     <Grid sx={{ display: "flex", alignItems: "center", height: "100vh" }}>
       <form
-        onSubmit={submit}
+        onSubmit={onsubmit}
         style={{
           width: "30%",
           padding: "20px",
@@ -49,7 +57,9 @@ const Login = () => {
         <TextField
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          onBlur={(e) => blur(e)}
+          onChange={changeEmail}
           fullWidth
           sx={{ mt: "20px" }}
           InputProps={{
@@ -60,10 +70,15 @@ const Login = () => {
             ),
           }}
         />
+        {emailDirty && (
+          <Typography sx={{ color: "red" }}>Please enter user email</Typography>
+        )}
         <TextField
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          onBlur={(e) => blur(e)}
+          onChange={changePassword}
           fullWidth
           sx={{ mt: "20px" }}
           InputProps={{
@@ -74,8 +89,14 @@ const Login = () => {
             ),
           }}
         />
+        {passwordDirty && (
+          <Typography sx={{ color: "red" }}>
+            Please enter your password
+          </Typography>
+        )}
         <Button
           fullWidth
+          type="submit"
           sx={{
             background: "#90DACC",
             color: "white",

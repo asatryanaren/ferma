@@ -1,4 +1,4 @@
 const Animals = () => {
-  return <div></div>;
+  return <div>Animals</div>;
 };
 export default Animals;

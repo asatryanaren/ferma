@@ -1,4 +1,4 @@
 const Spendings = () => {
-  return <div></div>;
+  return <div>Spendings</div>;
 };
 export default Spendings;
