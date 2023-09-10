@@ -6,6 +6,7 @@ import { PUBLIC_ROUTES } from "./Routes/public";
 import { useEffect } from "react";
 import { selectIsLoggedIs } from "./features/loginSlice";
 import SideBar from "./components/Sidebar/Sidebar";
+import { Box } from "@mui/material";
 
 function App() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ function App() {
   const routes = isLoggedIn ? PROTECTED_ROUTES : PUBLIC_ROUTES;
 
   return (
-    <div>
+    <Box sx={{ height: "100vh", backgroundColor: isLoggedIn && "#f0f2f5" }}>
       <Routes>
         {isLoggedIn ? (
           <Route path="/" element={<SideBar />}>
@@ -47,7 +48,7 @@ function App() {
         )}
         <Route path="*" element={<div>not found</div>} />
       </Routes>
-    </div>
+    </Box>
   );
 }
 

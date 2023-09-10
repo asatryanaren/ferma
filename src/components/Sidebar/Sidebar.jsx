@@ -23,7 +23,7 @@ import {
 } from "react-icons/ai";
 import { GiLabradorHead } from "react-icons/gi";
 import { TfiMenuAlt, TfiDashboard } from "react-icons/tfi";
-import { Button } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../features/loginSlice";
@@ -101,10 +101,13 @@ export default function SideBar() {
   const handleDrawerToggle = () => setOpen(!open);
   const disptach = useDispatch();
   const navigate = useNavigate();
+  const [pageName, setPageName] = React.useState("dashboard");
   const logout = () => {
     disptach(logOut());
     navigate("/");
   };
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const handleMenuItemClick = (index) => setSelectedIndex(index);
 
   return (
     <>
@@ -114,7 +117,11 @@ export default function SideBar() {
           position="fixed"
           open={open}
           sx={!open && { width: `calc(100% - ${64}px)` }}
-          style={{ backgroundColor: "white", color: "#808FA5" }}
+          style={{
+            backgroundColor: "white",
+            color: "#808FA5",
+            boxShadow: "none",
+          }}
         >
           <Toolbar
             sx={{
@@ -122,7 +129,17 @@ export default function SideBar() {
               justifyContent: "space-between",
             }}
           >
-            <Typography variant="h6" noWrap component="div">
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                fontSize: "14px",
+                fontWeight: "400",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -131,13 +148,72 @@ export default function SideBar() {
               >
                 {open ? <AiOutlineMenuFold /> : <AiOutlineMenuUnfold />}
               </IconButton>
-              Dashboard
+              Dashboard {pageName !== "dashboard" && `/ ${pageName}`}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography sx={{ color: "#009D75" }}>English</Typography>
+              <Typography
+                sx={{
+                  color: "#1da57a",
+                  fontSize: "14px",
+                  position: "relative",
+                  "&:hover": {
+                    color: "red",
+                  },
+                }}
+              >
+                English
+                <Paper
+                  sx={{
+                    display: "none",
+                    position: "absolute",
+                    top: "33px",
+                    left: "-16px",
+                    p: "13px",
+                    boxShadow: "0px 2px 22px -1px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      color: "rgba(0,0,0,.85)",
+                      "&:hover": {
+                        backgroundColor: "#F5F5F5",
+                      },
+                    }}
+                  >
+                    English
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      color: "rgba(0,0,0,.85)",
+                      "&:hover": {
+                        backgroundColor: "#F5F5F5",
+                      },
+                    }}
+                  >
+                    Հայերեն
+                  </Typography>
+                </Paper>
+                {/* <BlockHover sx={{ backgroundColor: "red" }} /> */}
+              </Typography>
               <Button
                 variant="outlined"
-                sx={{ ml: "10px", color: "inherit" }}
+                sx={{
+                  ml: "10px",
+                  color: "#1F2228",
+                  fontSize: "14px",
+                  padding: "4px 15px",
+                  borderRadius: "2px",
+                  backgroundColor: "transparent",
+                  border: "1px solid #d9d9d9",
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                    border: "1px solid #1da57a",
+                    color: "#1da57a",
+                  },
+                }}
                 onClick={logout}
               >
                 Logout
@@ -163,13 +239,28 @@ export default function SideBar() {
               "Select Fields",
               "Spendings",
               "Users",
-            ].map((text) => (
+            ].map((text, index) => (
               <NavLink
-                to={`/${text.toLowerCase()}`}
+                to={text.toLowerCase()}
                 key={text}
+                onClick={() => setPageName(text.toLowerCase())}
                 style={{ textDecoration: "none", color: "white" }}
+                // style={({ isActive }) => ({
+                //   backgroundColor: isActive ? "var(--color-active)" : "green",
+                // })}
               >
-                <ListItem disablePadding sx={{ display: "block" }}>
+                <ListItem
+                  disablePadding
+                  sx={{
+                    display: "block",
+                    "&$selected": {
+                      // color: colors.blue[500],
+                      backgroundColor: "red",
+                    },
+                  }}
+                  onClick={(event) => handleMenuItemClick(event, index)}
+                  selected={index === selectedIndex}
+                >
                   <ListItemButton
                     sx={{
                       minHeight: 48,

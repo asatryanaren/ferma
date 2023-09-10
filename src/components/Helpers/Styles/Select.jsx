@@ -20,9 +20,12 @@ const MySelect = ({ text }) => {
           onChange={handleChange}
           sx={{ borderRadius: "0px" }}
         >
-          <MenuItem value={10}>Ten</MenuItem>
+          {/* <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem> */}
+          {text?.map((t) => (
+            <MenuItem value={t}>{t}</MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>

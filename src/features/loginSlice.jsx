@@ -5,8 +5,9 @@ import jwtDecode from "jwt-decode";
 const cookies = new Cookies();
 
 const initialState = {
-  isLoggedIn: localStorage.getItem("isLoggedIn") ?? false,
+  isLoggedIn: localStorage.getItem("current-user") ?? null,
   token: null,
+  currentUser: localStorage.getItem("current-user") ?? null,
 };
 const loginSlice = createSlice({
   name: "login",
@@ -20,8 +21,9 @@ const loginSlice = createSlice({
         cookies.set("jwt_authorization", token, {
           expires: new Date(decoded.exp * 1000),
         });
+        localStorage.setItem("current-user", JSON.stringify(decoded));
+        console.log("decoded", decoded);
         state.isLoggedIn = true;
-        localStorage.setItem("isLoggedIn", JSON.stringify(state.isLoggedIn));
       }
     },
     logOut: (state) => {

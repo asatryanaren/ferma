@@ -104,9 +104,18 @@ const AddSingle = () => {
             onClick={handleClose}
             variant="outlined"
             sx={{
-              outline: "rgba(0, 0, 0, 0.87)",
-              color: "rgba(0, 0, 0, 0.87)",
-              "&:hover": { backgroundColor: "#50C878", color: "white" },
+              fontSize: "14px",
+              borderRadius: "2px",
+              border: "1px solid #d9d9d9",
+              p: "3px 10px ",
+              minWidth: "50px",
+              textTransform: "none",
+              color: "#7E7E7E",
+              "&:hover": {
+                border: "1px solid #1da57a",
+                color: "#1da57a",
+                backgroundColor: "transparent",
+              },
             }}
           >
             Сancel
@@ -115,9 +124,13 @@ const AddSingle = () => {
             autoFocus
             onClick={handleClose}
             sx={{
-              backgroundColor: "#00A570",
+              backgroundColor: "#1da57a",
               color: "white",
-              "&:hover": { backgroundColor: "#50C878" },
+              fontSize: "14px",
+              borderRadius: "2px",
+              p: "4px 10px",
+              minWidth: "50px",
+              "&:hover": { backgroundColor: "#3db389" },
             }}
           >
             Ok
