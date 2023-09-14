@@ -26,6 +26,16 @@ const AddUser = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [email, setEmail] = React.useState();
+  const [role, setRole] = React.useState();
+  const [firstName, setFirstname] = React.useState();
+  const [lastName, setLastName] = React.useState();
+
+  const changeEmail = () => {};
+  const changeRole = () => {};
+  const changeFirstName = () => {};
+  const changeLastName = () => {};
+
   return (
     <>
       <Button
@@ -99,6 +109,8 @@ const AddUser = () => {
             type="email"
             size="small"
             fullWidth
+            value={email}
+            onChange={changeEmail}
             InputProps={{ style: { borderRadius: 0, p: 0 } }}
           />
           <Box
@@ -122,7 +134,7 @@ const AddUser = () => {
               Role
             </InputLabel>
           </Box>
-          <MySelect />
+          <MySelect items={["admin", "editor"]} />
           <Box
             sx={{
               color: "red",
@@ -148,6 +160,8 @@ const AddUser = () => {
             type="text"
             size="small"
             fullWidth
+            value={firstName}
+            onChange={changeFirstName}
             InputProps={{ sx: { borderRadius: 0 } }}
           />
           <Box
@@ -175,6 +189,8 @@ const AddUser = () => {
             type="text"
             size="small"
             fullWidth
+            value={lastName}
+            onChange={changeLastName}
             InputProps={{ sx: { borderRadius: 0 } }}
           />
         </DialogContent>

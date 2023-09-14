@@ -11,20 +11,11 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { Box, Button } from "@mui/material";
 import EditPassword from "../Users/popups/EditPassword";
 import EdithUser from "../Users/popups/EditUser";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import { useSelector } from "react-redux";
+import { selectUsersData } from "../../features/RegistredUsers";
 
 const Mytable = () => {
+  const users = useSelector(selectUsersData);
   return (
     <TableContainer component={Paper} sx={{ mt: "20px" }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -67,17 +58,17 @@ const Mytable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {users?.map((user) => (
             <TableRow
-              key={row.name}
+              key={user.email}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
                 "&:hover": { backgroundColor: "#FAFAFA" },
               }}
             >
-              <TableCell component="th">{row.name}</TableCell>
-              <TableCell>{row.calories}</TableCell>
-              <TableCell>{row.fat}</TableCell>
+              <TableCell component="th">{user.firstName}</TableCell>
+              <TableCell>{user.role}</TableCell>
+              <TableCell>{user.email}</TableCell>
               <TableCell>
                 <Box
                   sx={{
@@ -88,6 +79,7 @@ const Mytable = () => {
                   <EditPassword />
                   <EdithUser />
                   <Button
+                    disabled={user.role === "admin"}
                     sx={{
                       border: "1px solid red",
                       display: "flex",
@@ -101,6 +93,11 @@ const Mytable = () => {
                       p: 0,
                       "&:hover": {
                         backgroundColor: "transparent",
+                      },
+                      "&:disabled": {
+                        border: "1px solid #D9D9D9",
+                        backgroundColor: "#F5F5F5",
+                        color: "#D0D0D0",
                       },
                     }}
                   >

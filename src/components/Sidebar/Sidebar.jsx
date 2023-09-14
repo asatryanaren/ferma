@@ -106,8 +106,6 @@ export default function SideBar() {
     disptach(logOut());
     navigate("/");
   };
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const handleMenuItemClick = (index) => setSelectedIndex(index);
 
   return (
     <>
@@ -151,17 +149,19 @@ export default function SideBar() {
               Dashboard {pageName !== "dashboard" && `/ ${pageName}`}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography
-                sx={{
-                  color: "#1da57a",
-                  fontSize: "14px",
-                  position: "relative",
-                  "&:hover": {
-                    color: "red",
-                  },
-                }}
-              >
-                English
+              <Box>
+                <Typography
+                  sx={{
+                    color: "#1da57a",
+                    fontSize: "14px",
+                    position: "relative",
+                    "&:hover": {
+                      color: "red",
+                    },
+                  }}
+                >
+                  English
+                </Typography>
                 <Paper
                   sx={{
                     display: "none",
@@ -195,8 +195,10 @@ export default function SideBar() {
                     Հայերեն
                   </Typography>
                 </Paper>
-                {/* <BlockHover sx={{ backgroundColor: "red" }} /> */}
-              </Typography>
+              </Box>
+
+              {/* <BlockHover sx={{ backgroundColor: "red" }} /> */}
+
               <Button
                 variant="outlined"
                 sx={{
@@ -239,12 +241,15 @@ export default function SideBar() {
               "Select Fields",
               "Spendings",
               "Users",
-            ].map((text, index) => (
+            ].map((text) => (
               <NavLink
                 to={text.toLowerCase()}
                 key={text}
                 onClick={() => setPageName(text.toLowerCase())}
-                style={{ textDecoration: "none", color: "white" }}
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                }}
                 // style={({ isActive }) => ({
                 //   backgroundColor: isActive ? "var(--color-active)" : "green",
                 // })}
@@ -253,13 +258,11 @@ export default function SideBar() {
                   disablePadding
                   sx={{
                     display: "block",
-                    "&$selected": {
+                    "&:active": {
                       // color: colors.blue[500],
                       backgroundColor: "red",
                     },
                   }}
-                  onClick={(event) => handleMenuItemClick(event, index)}
-                  selected={index === selectedIndex}
                 >
                   <ListItemButton
                     sx={{

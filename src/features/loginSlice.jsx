@@ -1,12 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Cookies from "universal-cookie";
-import jwtDecode from "jwt-decode";
-
-const cookies = new Cookies();
 
 const initialState = {
   isLoggedIn: localStorage.getItem("current-user") ?? null,
-  token: null,
+  token: JSON.parse(localStorage.getItem("token")) ?? null,
   currentUser: localStorage.getItem("current-user") ?? null,
 };
 const loginSlice = createSlice({
@@ -14,26 +10,27 @@ const loginSlice = createSlice({
   initialState,
   reducers: {
     setCredendials: (state, action) => {
-      const { token } = action.payload;
-      const decoded = jwtDecode(token);
-      state.token = token;
-      if (decoded) {
-        cookies.set("jwt_authorization", token, {
-          expires: new Date(decoded.exp * 1000),
-        });
-        localStorage.setItem("current-user", JSON.stringify(decoded));
-        console.log("decoded", decoded);
+      const { data, status } = action.payload;
+      if (status === 200) {
+        localStorage.setItem("current-user", JSON.stringify(data));
+        localStorage.setItem("token", JSON.stringify(data.token));
+        state.token = data.token;
         state.isLoggedIn = true;
       }
     },
-    logOut: (state) => {
-      state.isLoggedIn = false;
-      state.token = null;
-      cookies.remove("jwt_authorization");
-      localStorage.clear();
+    authErrors: (state, action) => {
+      const { status } = action.payload;
+      if (status === 403) {
+        alert("wrong password");
+      }
+      if (status === 404) {
+        alert("wrong email");
+      }
     },
-    addErrorMessage: (state) => {
-      state.errorMessage = "Email or password is not correct";
+    logOut: (state) => {
+      state.isLoggedIn = null;
+      state.token = null;
+      localStorage.clear();
     },
   },
   // extraReducers: {
@@ -50,6 +47,7 @@ const loginSlice = createSlice({
 
 export const selectCurreentUser = (state) => state.loginSlice.user;
 export const selectIsLoggedIs = (state) => state.loginSlice.isLoggedIn;
+export const selectToken = (state) => state.loginSlice.token;
 
-export const { setCredendials, logOut } = loginSlice.actions;
+export const { setCredendials, authErrors, logOut } = loginSlice.actions;
 export default loginSlice.reducer;

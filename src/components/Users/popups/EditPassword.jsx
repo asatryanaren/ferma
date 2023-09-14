@@ -30,25 +30,24 @@ const EditPassword = () => {
   return (
     <>
       {/* tooltip error */}
-      <Tooltip title="Reset Password" placement="top" arrow>
-        <Box>
-          <Button
-            onClick={handleClickOpen}
-            title="reset password"
-            sx={{
-              minWidth: "0px",
-              fontSize: "20px",
-              color: "#00A470",
-              p: "0px",
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            }}
-          >
-            <BiReset />
-          </Button>
-        </Box>
-      </Tooltip>
+      {/* <Tooltip title="Reset Password" placement="top" arrow> */}
+      <Typography>
+        <Button
+          onClick={handleClickOpen}
+          sx={{
+            minWidth: "0px",
+            fontSize: "20px",
+            color: "#00A470",
+            p: "0px",
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
+          <BiReset />
+        </Button>
+      </Typography>
+      {/* </Tooltip> */}
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

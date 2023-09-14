@@ -18,7 +18,7 @@ const Login = () => {
   const [emailDirty, setEmailDirty] = useState(false);
   const [passwordDirty, setPasswordDirty] = useState(false);
 
-  const onsubmit = async (e) => {
+  const onsubmit = (e) => {
     e.preventDefault();
     dispatch(loginedUser({ email, password }));
   };
