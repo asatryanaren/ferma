@@ -6,7 +6,7 @@ import { selectQuantitUsers } from "../../features/RegistredUsers";
 const MyPagination = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalItems = useSelector(selectQuantitUsers);
-  const itemsPerPage = 4;
+  const itemsPerPage = 10;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const PageChange = (value) => setCurrentPage(value);

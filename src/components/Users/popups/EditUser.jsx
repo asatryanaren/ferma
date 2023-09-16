@@ -12,6 +12,10 @@ import { FaStarOfLife } from "react-icons/fa";
 import { Box, InputLabel, TextField } from "@mui/material";
 import MySelect from "../../Helpers/Styles/Select";
 
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken } from "../../../features/loginSlice";
+import { editUser } from "../../../services/registredUsers.service";
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -21,21 +25,37 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const AddUser = () => {
+const EditUser = ({ userData }) => {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [email, setEmail] = React.useState();
-  const [role, setRole] = React.useState();
-  const [firstName, setFirstname] = React.useState();
-  const [lastName, setLastName] = React.useState();
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const {
+    initialEmail,
+    initialId,
+    initialLastName,
+    initialFirstName,
+    initialRole,
+  } = userData;
 
-  const changeEmail = () => {};
-  const changeRole = () => {};
-  const changeFirstName = () => {};
-  const changeLastName = () => {};
+  const [email, setEmail] = React.useState(initialEmail);
+  const [role, setRole] = React.useState(initialRole);
+  const [firstName, setFirstname] = React.useState(initialFirstName);
+  const [lastName, setLastName] = React.useState(initialLastName);
 
+  const changeEmail = (e) => setEmail(e.target.value);
+  const changeRole = (e) => {
+    changeRole(e.target.value);
+  };
+  const changeFirstName = (e) => setFirstname(e.target.value);
+  const changeLastName = (e) => setLastName(e.target.value);
+  const data = { email, role, firstName, lastName, _id: initialId };
+  const editUser_and_close = () => {
+    dispatch(editUser({ data, token }));
+    setOpen(false);
+  };
   return (
     <>
       <Button
@@ -134,7 +154,11 @@ const AddUser = () => {
               Role
             </InputLabel>
           </Box>
-          <MySelect items={["admin", "editor"]} />
+          <MySelect
+            items={["admin", "editor"]}
+            valueRole={role}
+            changeRole={setRole}
+          />
           <Box
             sx={{
               color: "red",
@@ -217,7 +241,7 @@ const AddUser = () => {
           </Button>
           <Button
             autoFocus
-            onClick={handleClose}
+            onClick={editUser_and_close}
             sx={{
               backgroundColor: "#1da57a",
               color: "white",
@@ -235,4 +259,4 @@ const AddUser = () => {
     </>
   );
 };
-export default AddUser;
+export default EditUser;

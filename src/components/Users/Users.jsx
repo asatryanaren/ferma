@@ -13,7 +13,6 @@ const Users = () => {
   useEffect(() => {
     dispatch(getUsersApi(token));
   }, []);
-
   return (
     <>
       <AddUser />

@@ -12,6 +12,9 @@ import { AiOutlineClose } from "react-icons/ai";
 import { FaStarOfLife } from "react-icons/fa";
 import { Box, InputLabel, TextField } from "@mui/material";
 import MySelect from "../../Helpers/Styles/Select";
+import { createUser } from "../../../services/registredUsers.service";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken } from "../../../features/loginSlice";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -26,6 +29,25 @@ const AddUser = () => {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
+
+  const [email, setEmail] = React.useState("");
+  const [role, setRole] = React.useState("editor");
+  const [firstName, setFirstname] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+
+  const changeEmail = (e) => setEmail(e.target.value);
+  const changeRole = (e) => setRole(e.target.value);
+  const changeFirstName = (e) => setFirstname(e.target.value);
+  const changeLastName = (e) => setLastName(e.target.value);
+
+  const token = useSelector(selectToken);
+
+  const addNewUser_And_close = () => {
+    const user = { role, firstName, lastName, email };
+    dispatch(createUser({ user, token }));
+    setOpen(false);
+  };
 
   return (
     <>
@@ -92,6 +114,8 @@ const AddUser = () => {
           <TextField
             type="email"
             size="small"
+            value={email}
+            onChange={changeEmail}
             fullWidth
             InputProps={{ sx: { borderRadius: 0 } }}
           />
@@ -116,7 +140,11 @@ const AddUser = () => {
               Role
             </InputLabel>
           </Box>
-          <MySelect />
+          <MySelect
+            items={["admin", "editor"]}
+            valueRole={role}
+            changeRole={setRole}
+          />
           <Box
             sx={{
               color: "red",
@@ -141,6 +169,8 @@ const AddUser = () => {
           <TextField
             type="text"
             size="small"
+            value={firstName}
+            onChange={changeFirstName}
             fullWidth
             InputProps={{ sx: { borderRadius: 0 } }}
           />
@@ -168,6 +198,8 @@ const AddUser = () => {
           <TextField
             type="text"
             size="small"
+            value={lastName}
+            onChange={changeLastName}
             fullWidth
             InputProps={{ sx: { borderRadius: 0 } }}
           />
@@ -195,7 +227,7 @@ const AddUser = () => {
           </Button>
           <Button
             autoFocus
-            onClick={handleClose}
+            onClick={addNewUser_And_close}
             sx={{
               backgroundColor: "#1da57a",
               color: "white",
