@@ -17,7 +17,7 @@ const Users = () => {
   const usersData = useSelector(selectUsersData)?.length;
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = +searchParams.get("page") ?? 1;
+  const page = +searchParams.get("page") || 1;
 
   const pageQty = useSelector(selectQuantityUsers);
   const itemsPerPage = 10;
