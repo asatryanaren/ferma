@@ -234,7 +234,13 @@ export default function SideBar() {
             />
           </DrawerHeader>
 
-          <List sx={{ background: "#00112B", height: "100vh", color: "white" }}>
+          <List
+            sx={{
+              background: "#00112B",
+              height: "100vh",
+              color: "white",
+            }}
+          >
             {[
               "Dashboard",
               "Animals",
@@ -258,6 +264,7 @@ export default function SideBar() {
                   disablePadding
                   sx={{
                     display: "block",
+
                     "&:active": {
                       // color: colors.blue[500],
                       backgroundColor: "red",

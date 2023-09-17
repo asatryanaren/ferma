@@ -1,21 +1,34 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getUsers } from "../features/RegistredUsers";
+import { getUsers, quantityUsers } from "../features/RegistredUsers";
 
 const BASE_URL = "https://d01b-37-252-90-50.ngrok-free.app";
 
 export const getUsersApi = createAsyncThunk(
   "users/fetchUsers",
-  async (token, { dispatch }) => {
-    const response = await axios.get(`${BASE_URL}/api/users`, {
+  async ({ token, itemsPerPage = 10, page }, { dispatch }) => {
+    const response = await axios.get(
+      `${BASE_URL}/api/users?page=${page}&skip=${
+        (page - 1) * itemsPerPage
+      }&limit=${itemsPerPage}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    dispatch(getUsers(response.data));
+    const resp = await axios.get(`${BASE_URL}/api/users`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
-    dispatch(getUsers(response.data));
+    dispatch(quantityUsers(resp.data));
   }
 );
+
 export const createUser = createAsyncThunk(
   "user/createUsers",
   async ({ user, token }, { dispatch }) => {
@@ -24,7 +37,7 @@ export const createUser = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
-    dispatch(getUsersApi(token));
+    dispatch(getUsersApi({ token }));
   }
 );
 export const deleteUser = createAsyncThunk(
@@ -35,7 +48,7 @@ export const deleteUser = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
-    dispatch(getUsersApi(token));
+    dispatch(getUsersApi({ token }));
   }
 );
 export const editUser = createAsyncThunk(
@@ -46,6 +59,6 @@ export const editUser = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
-    dispatch(getUsersApi(token));
+    dispatch(getUsersApi({ token }));
   }
 );

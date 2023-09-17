@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   usersData: null,
-  quantitUsers: null,
+  quantityUsers: null,
 };
 const RegistredUsersSlice = createSlice({
   name: "user",
@@ -10,14 +10,16 @@ const RegistredUsersSlice = createSlice({
   reducers: {
     getUsers: (state, action) => {
       state.usersData = action.payload;
-      state.quantitUsers = action.payload.length;
+    },
+    quantityUsers: (state, action) => {
+      state.quantityUsers = action.payload.length;
     },
   },
 });
 
 export const selectUsersData = (state) => state.RegistredUsersSlice.usersData;
-export const selectQuantitUsers = (state) =>
-  state.RegistredUsersSlice.quantitUsers;
+export const selectQuantityUsers = (state) =>
+  state.RegistredUsersSlice.quantityUsers;
 
-export const { getUsers } = RegistredUsersSlice.actions;
+export const { getUsers, quantityUsers } = RegistredUsersSlice.actions;
 export default RegistredUsersSlice.reducer;

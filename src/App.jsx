@@ -24,7 +24,7 @@ function App() {
   const routes = isLoggedIn ? PROTECTED_ROUTES : PUBLIC_ROUTES;
 
   return (
-    <Box sx={{ height: "100vh", backgroundColor: isLoggedIn && "#f0f2f5" }}>
+    <Box sx={{ height: "100%", backgroundColor: isLoggedIn && "#f0f2f5" }}>
       <Routes>
         {isLoggedIn ? (
           <Route path="/" element={<SideBar />}>

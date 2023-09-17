@@ -1,4 +1,11 @@
+import ProblemFields from "./ProblemFields";
+
 const SelectFields = () => {
-  return <div>SelectFields</div>;
+  return (
+    <div>
+      SelectFields
+      <ProblemFields />
+    </div>
+  );
 };
 export default SelectFields;
