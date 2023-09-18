@@ -79,7 +79,7 @@ const Mytable = () => {
                     alignItems: "center",
                   }}
                 >
-                  <EditPassword />
+                  <EditPassword email={user.email} />
                   <EdithUser
                     userData={{
                       initialLastName: user.lastName,

@@ -45,7 +45,7 @@ const loginSlice = createSlice({
   // },
 });
 
-export const selectCurreentUser = (state) => state.loginSlice.user;
+export const selectCurreentUser = (state) => state.loginSlice.currentUser;
 export const selectIsLoggedIs = (state) => state.loginSlice.isLoggedIn;
 export const selectToken = (state) => state.loginSlice.token;
 

@@ -62,3 +62,13 @@ export const editUser = createAsyncThunk(
     dispatch(getUsersApi({ token }));
   }
 );
+export const resetUserPassword = createAsyncThunk(
+  "user/resetUserPassword",
+  async ({ token, email }) => {
+    await axios.post(`${BASE_URL}/api/auth/reset-password`, email, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+);

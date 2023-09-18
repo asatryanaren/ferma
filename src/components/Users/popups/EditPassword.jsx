@@ -10,6 +10,9 @@ import Typography from "@mui/material/Typography";
 import { BiReset } from "react-icons/bi";
 import { AiOutlineClose } from "react-icons/ai";
 import { Box, Tooltip } from "@mui/material";
+import { resetUserPassword } from "../../../services/registredUsers.service";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken } from "../../../features/loginSlice";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -20,12 +23,16 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const EditPassword = () => {
+const EditPassword = ({ email }) => {
   const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => setOpen(true);
-
-  const handleClose = () => setOpen(false);
+  const clickOpen = () => setOpen(true);
+  const close = () => setOpen(false);
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const resetPassword_and_close = () => {
+    dispatch(resetUserPassword({ token, email }));
+    setOpen(false);
+  };
 
   return (
     <>
@@ -33,7 +40,7 @@ const EditPassword = () => {
       {/* <Tooltip title="Reset Password" placement="top" arrow> */}
       <Typography>
         <Button
-          onClick={handleClickOpen}
+          onClick={clickOpen}
           sx={{
             minWidth: "0px",
             fontSize: "20px",
@@ -49,13 +56,13 @@ const EditPassword = () => {
       </Typography>
       {/* </Tooltip> */}
       <BootstrapDialog
-        onClose={handleClose}
+        onClose={close}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
         <IconButton
           aria-label="close"
-          onClick={handleClose}
+          onClick={close}
           sx={{
             position: "absolute",
             right: 8,
@@ -80,7 +87,7 @@ const EditPassword = () => {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleClose}
+            onClick={close}
             variant="outlined"
             sx={{
               fontSize: "14px",
@@ -101,7 +108,7 @@ const EditPassword = () => {
           </Button>
           <Button
             autoFocus
-            onClick={handleClose}
+            onClick={resetPassword_and_close}
             sx={{
               backgroundColor: "#1da57a",
               color: "white",
